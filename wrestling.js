@@ -1,6 +1,23 @@
+"use strict";
 
-var express = require('express');
-var router = express.Router();
+var Promise = require('promise');
+var _ = require('lodash');
 
 
-module.exports = router;
+function getScore(product) {
+    return _.reduce(product.factors, function (sum, x) {
+        return sum + x * (Math.random() * 10);
+    });
+}
+
+module.exports = {
+    runMatch: function(xProduct, yProduct) {
+
+        return new Promise(function(resolve) {
+            var xKarma = getScore(xProduct);
+            var yKarma = getScore(yProduct);
+
+            resolve(xKarma > yKarma ? xProduct : yProduct);
+        });
+    }
+};

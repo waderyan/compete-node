@@ -1,3 +1,5 @@
+"use strict";
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,7 +9,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var wrestling = require('./wrestling');
+var wrestle = require('./wrestling');
 
 var app = express();
 
@@ -19,13 +21,43 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/wrestling', wrestling);
+
+app.use(function(req, res, next) {
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    next();
+});
+
+app.get('/ping', function(req, res) {
+  res.send('ping back to ya');
+});
+
+app.post('/wrestle', function (req, res) {
+    var data = req.body;
+
+    var xProduct = data.xProduct;
+    var yProduct = data.yProduct;
+
+    return wrestle.runMatch(xProduct, yProduct).then(function(winner) {
+        res.send(winner);
+    });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
