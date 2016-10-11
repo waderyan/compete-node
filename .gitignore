@@ -40,7 +40,4 @@ jspm_packages
 
 
 .idea/
-bin/
 node_modules/
-public/images/
-public/javascripts/
