@@ -7,6 +7,6 @@
 		"allowSyntheticDefaultImports": true
 	},
     "files": [
-        "public/javascripts/main.js"
+		"./**/*.js"
     ]
 }
