@@ -9,7 +9,13 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
 var wrestle = require('./wrestling');
+var _ = require('underscore');
+
+
+// var wrestle = require('./wrestling');
+// var _ = require('underscore');
 
 var app = express();
 
@@ -45,18 +51,19 @@ app.use(function(req, res, next) {
 });
 
 app.get('/ping', function(req, res) {
-  res.send('ping back to ya');
+    res.send('back at ya');
 });
 
-app.post('/wrestle', function (req, res) {
-    var data = req.body;
+app.post('/wrestle', function(req, res, next) {
+   var data = req.body;
 
-    var xProduct = data.xProduct;
-    var yProduct = data.yProduct;
-
-    return wrestle.runMatch(xProduct, yProduct).then(function(winner) {
-        res.send(winner);
+    return wrestle.runMatch(data.xProduct, data.yProduct).then(function(winner) {
+       res.send(winner);
     });
+
+    // return wrestle.runMatch(data.xProduct, data.yProduct).then(function(winner) {
+    //     res.send(winner);
+    // });
 });
 
 // catch 404 and forward to error handler
@@ -69,7 +76,7 @@ app.use(function(req, res, next) {
 // error handlers
 
 // development error handler
-// will print stacktrace
+// will print stacktraceapp.js
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
