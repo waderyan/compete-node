@@ -13,7 +13,6 @@ var users = require('./routes/users');
 var wrestle = require('./wrestling');
 var _ = require('underscore');
 
-
 // var wrestle = require('./wrestling');
 // var _ = require('underscore');
 
@@ -61,9 +60,6 @@ app.post('/wrestle', function(req, res, next) {
        res.send(winner);
     });
 
-    // return wrestle.runMatch(data.xProduct, data.yProduct).then(function(winner) {
-    //     res.send(winner);
-    // });
 });
 
 // catch 404 and forward to error handler
